@@ -13,12 +13,12 @@ var certificate = fs.readFileSync(process.cwd() + '/certificate/file.crt', 'utf8
 var credentials = { key: privateKey, cert: certificate };
 var httpsServer = https.createServer(credentials, app);
 // var PORT = 18080;
-var SSLPORT = 18081;
+var SSLPORT = 3000;
 /**
  * Get port from environment and store in Express.
  */
 
-// var port = normalizePort(process.env.PORT || '3000');
+// var port = normalizePort(process.env.SSLPORT || '90201');
 // app.set('port', 'SSLPORT');
 
 /**
