@@ -86,6 +86,20 @@ app.get('delete', function(req, res) {
     });
 });
 
+//修改
+app.get('update', function(req, res, next) {
+    var id = req.params.id;
+    var sql = "select * from user where id = " + id;
+    console.log(sql);
+    connection.query(sql, function(err, rows) {
+        if (err) {
+            res.send("修改页面跳转失败");
+        } else {
+            res.render("update", { datas: rows });
+        }
+    });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
