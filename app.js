@@ -74,6 +74,18 @@ app.post('/456', function(req, res) {
         res.json(res.data);
 });
 
+// 删除
+app.get('delete', function(req, res) {
+    var id = req.params.id;
+    connection.query("delete from user where id = " + id, function(err, rows) {
+        if (err) {
+            res.send("删除失败" + err);
+        } else {
+            res.redirect("/users");
+        }
+    });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
