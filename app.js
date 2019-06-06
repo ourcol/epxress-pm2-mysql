@@ -32,7 +32,7 @@ app.use('/users', usersRouter);
 app.use('/main', mainRouter);
 
 //设置跨域访问
-app.all('*', function(req, res, next) {
+app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     //Access-Control-Allow-Headers ,可根据浏览器的F12查看,把对应的粘贴在这里就行
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -47,40 +47,44 @@ var param;
 
 connection.connect();
 
-//写个接口123
-app.get('/123', function(req, res) {
+//查询列表
+app.get('/queryList', function (req, res) {
     console.log(req);
     res.status(200),
-        connection.query('SELECT id,name,profession,age FROM user', function(err, rows, fields) {
+        connection.query('SELECT id,name,profession,age FROM user', function (err, rows, fields) {
             if (err) throw err
-            questions = rows;
+            questions = {
+                success: true,
+                result: rows
+            };
+            res.json(questions)
         })
-    res.json(questions)
+
 });
-console.log('111111111')
+
 var param = { name: '译名' };
-app.post('/456', function(req, res) {
+
+//插入列表
+app.post('/insert', function (req, res) {
     param = req.body;
-    console.log(param);
-    console.log('reqqqqqqqqq' + JSON.stringify(param));
-    connection.query('INSERT INTO user(name) VALUES(?)', param.name, function(err, result) {
-            // if (err) { 
-            //   console.log(err);
-            // }
-            console.log('req2' + (JSON.stringify(result)));
-        })
-        // console.log(result)
+    connection.query('INSERT INTO user(name) VALUES(?)', param.name, function (err, result) {
+        console.log('req2' + (JSON.stringify(result)));
+    })
     res.status(200),
-        res.json(res.data);
+        res.data = {
+            result: null,
+            success: true
+        }
+    res.json(res.data);
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
